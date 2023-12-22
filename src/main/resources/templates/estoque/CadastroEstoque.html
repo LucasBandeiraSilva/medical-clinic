@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <style>
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: darkgrey;
+      }
+    </style>
+    <title>Cadastrar Serviço</title>
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <h3 class="ms-5">Cadastre o Serviço</h3>
+          </div>
+          <div class="col-6">
+            <form
+              action="/estoque/salvar-produto"
+              method="post"
+              enctype="multipart/form-data"
+              th:object="${estoque}"
+            >
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="nome" class="form-label">Nome</label>
+                  <input
+                    type="text"
+                    th:field="*{nome}"
+                    id="nome"
+                    class="form-control"
+                    placeholder="titulo do serviço"
+                    th:errorclass="is-invalid"
+                  />
+                  <div class="invalid-feedback" th:errors="*{nome}"></div>
+                </div>
+                <div class="col-md-4">
+                  <label for="nome" class="form-label">Valor</label>
+                  <input
+                    type="number"
+                    id="valor"
+                    th:field="*{valor}"
+                    class="form-control"
+                    placeholder="0,00"
+                    th:errorclass="is-invalid"
+                  />
+                  <div class="invalid-feedback" th:errors="*{valor}"></div>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="descricao" class="form-label">Descrição</label>
+                  <textarea
+                    class="form-control"
+                    th:field="*{descricao}"
+                    id="descricao"
+                    placeholder="informe sobre o serviço"
+                    rows="3"
+                    th:errorclass="is-invalid"
+                  ></textarea>
+                  <div class="invalid-feedback" th:errors="*{descricao}"></div>
+                </div>
+                <div class="col">
+                  <label for="imagem" class="form-label">Imagem Produto</label>
+                  <input
+                    type="file"
+                    name="fileEstoque"
+                    id="fileEstoque"
+                    class="form-control"
+                    
+                  />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary mt-2">Salvar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

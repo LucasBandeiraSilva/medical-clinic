@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+    <title>Cadastro</title>
+  </head>
+  <body>
+    <div class="row d-flex justify-content-between">
+      <div class="col-6 d-flex align-items-center">
+        <h1>Cadastro de Médicos</h1> <br>
+      </div>
+      <div class="col-6">
+        <form
+          action="/backoffice/Salvar-Cadastro"
+          method="post"
+          th:object="${medico}"
+          enctype="multipart/form-data"
+        >
+          <div class="row">
+            <div class="col-md-4">
+              <label for="nome" class="form-label">Nome</label>
+              <input
+                type="text"
+                id="nome"
+                th:field="*{nome}"
+                class="form-control"
+                placeholder="Informe seu nome"
+                th:errorclass="is-invalid"
+              />
+              <div class="invalid-feedback" th:errors="*{nome}"></div>
+            </div>
+            <div class="col-md-4">
+              <label for="sobrenome" class="form-label">Sobrenome</label>
+              <input
+                type="text"
+                id="sobrenome"
+                th:field="*{sobrenome}"
+                class="form-control"
+                placeholder="Informe seu sobrenome"
+                th:errorclass="is-invalid"
+              />
+              <div class="invalid-feedback" th:errors="*{sobrenome}"></div>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="celular" class="form-label"
+                >Celular para contato</label
+              >
+              <input
+                type="number"
+                th:field="*{celular}"
+                id="celular"
+                class="form-control"
+                aria-describedby="emailHelp"
+                inputmode="numeric"
+                th:errorclass="is-invalid"
+              />
+              <div class="invalid-feedback" th:errors="*{celular}"></div>
+
+            </div>
+            <div class="col-md-4">
+              
+              <label for="idade" class="form-label">Idade</label>
+              <input
+                type="number"
+                id="idade"
+                th:field="*{idade}"
+                class="form-control"
+                placeholder="Informe sua idade"
+                th:errorclass="is-invalid"
+              />
+              <div class="invalid-feedback" th:errors="*{idade}"></div>
+
+            </div>
+          </div>
+          <div class="row">
+            <p th:text="${mensagemErro}" class="mt-2 text-danger"></p>
+            <div class="col-md-4">
+
+              <label for="email" class="form-label">E-mail</label>
+              <input
+                type="text"
+                id="email"
+                th:field="*{email}"
+                class="form-control"
+                placeholder="Informe seu E-mail"
+                th:errorclas="is-invalid"
+              />
+              <div class="invalid-feedback" th:errors="*{email}"></div>
+            </div>
+            <div class="col-md-4">
+              <label for="cpf" class="form-label">Informe o seu CPF</label>
+              <input
+                type="text"
+                th:field="*{cpf}"
+                id="cpf"
+                class="form-control"
+                th:errorclass="is-invalid"
+              />
+              <div class="invalid-feedback" th:errors="*{cpf}"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="codigo" class="form-label">CRO/CRM</label>
+              <input
+                type="text"
+                th:field="*{codigo}"
+                id="codigo"
+                class="form-control"
+                placeholder="CRO/CRM"
+                th:errorclass="is-invalid"
+              />
+
+              <div class="invalid-feedback" th:errors="*{codigo}"></div>
+            </div>
+            <div class="col mt-2">
+              <label for="foto">Foto de perfil</label>
+              <input
+                type="file"
+                name="fileProduto"
+                id="foto"
+                class="form-control"
+                accept="image/*"
+              />
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-4">
+              <label for="senha">Informe a sua senha aqui</label>
+              <input
+                type="password"
+                th:field="*{senha}"
+                id="senha"
+                class="form-control"
+                placeholder="Senha"
+                th:errorclass="is-invalid"
+              />
+              <div class="invalid-feedback" th:errors="*{senha}"></div>
+            </div>
+            <div class="col-md-4">
+              <label for="senha">Repita a sua senha aqui</label>
+              <input
+                type="password"
+                id="senha"
+                class="form-control"
+                placeholder="Senha"
+              />
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label for="cidadesEnum" class="form-label"
+                  >Escolha o seu Estado</label
+                >
+                <select
+                  th:field="*{cidadesEnum}"
+                  id="cidadesEnum"
+                  required
+                  class="form-select"
+                >
+                  <option selected disabled value="">Escolha</option>
+                  <option
+                    th:each="estados : ${estados}"
+                    th:text="${estados.nome}"
+                    th:value="${estados}"
+                  ></option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="Especialidades" class="form-label"
+                  >Escolha sua especialidade</label
+                >
+                <select
+                  th:field="*{especialidades}"
+                  id="Especialidades"
+                  required
+                  class="form-select"
+                >
+                  <option selected disabled value="">Escolha</option>
+                  <option
+                    th:each="Especialidades : ${especialidades}"
+                    th:text="${Especialidades}"
+                    th:value="${Especialidades}"
+                  ></option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-outline-success mt-4" type="submit">
+            Enviar dados
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </body>
+</html>
