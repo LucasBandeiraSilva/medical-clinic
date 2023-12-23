@@ -25,7 +25,10 @@
       /* max: do valor para baixo */
       @media (max-width: 574px) {
         .aside {
-          height: 20vh;
+          height: auto;
+        }
+        .mainView {
+          height: auto;
         }
       }
     </style>
@@ -41,7 +44,8 @@
             <div th:if="${mensagem}">
               <p th:text="${mensagem}" class="alert alert-success"></p>
             </div>
-            <div class="d-flex">
+            <h6>nome do cliente aqui</h6>
+            <div class="d-flex mt-md-4">
               <a
                 class="btn btn-info text-light mt-auto mb-auto me-2"
                 href="/cliente/perfil"
@@ -55,11 +59,32 @@
             </div>
           </header>
         </div>
-        <div class="col-12 bg-dark bg-opacity-75 col-sm-3 h400 mainView aside">
+        <div class="col-12 bg-dark bg-opacity-75 col-sm-3 h400 aside mainView">
           <aside>Links de ajuda</aside>
         </div>
         <div class="col-12 bg-dark bg-opacity-25 col-sm-9 h400 mainView">
-          <main>conteudo principal</main>
+          <div class="row row-cols-1 row-cols-md-auto g-3">
+            <div th:each="servicos : ${servicos}" class="col-md-3">
+              <div class="container">
+
+                <div class="card mx-auto" style="max-width: 12rem;">
+                  <img
+                  th:src="@{/estoque/foto-produto/{id}(id= ${servicos.id})}"
+                  alt="Imagem do serviço oferecido"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title" th:text="${servicos.nome}"></h5>
+                    <p class="card-text" th:text="${servicos.descricao}"></p>
+                    <a
+                    class="btn btn-sm btn-primary"
+                    th:href="@{/estoque/descricao/Produto{id}(id=${servicos.id})}"
+                    >ver detalhes</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-12 h100 bg-dark bg-opacity-50">
           <footer>rodape</footer>

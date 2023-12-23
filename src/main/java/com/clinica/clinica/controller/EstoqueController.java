@@ -68,6 +68,5 @@ public class EstoqueController {
         ModelAndView mv = new ModelAndView("estoque/listagemEstoque");
         mv.addObject("estoque",listaEstoques );
         return mv;
-
 }
 }

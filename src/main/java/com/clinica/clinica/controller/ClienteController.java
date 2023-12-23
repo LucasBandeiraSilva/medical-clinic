@@ -1,5 +1,7 @@
 package com.clinica.clinica.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -11,9 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.clinica.clinica.dto.PacienteDto;
+import com.clinica.clinica.entities.Estoque;
 import com.clinica.clinica.entities.Paciente;
 import com.clinica.clinica.enumTypes.CidadesEnum;
 import com.clinica.clinica.repository.ClienteRepository;
+import com.clinica.clinica.repository.EstoqueRepository;
 
 import jakarta.validation.Valid;
 
@@ -22,6 +26,9 @@ public class ClienteController {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private EstoqueRepository estoqueRepository;
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -62,6 +69,8 @@ public class ClienteController {
     @GetMapping("/catalogo")
     public ModelAndView catalogo() {
         ModelAndView mv = new ModelAndView();
+        List<Estoque> lista = this.estoqueRepository.findAll();
+        mv.addObject("servicos", lista);
         mv.setViewName("cliente/catalogo-consulta");
         return mv;
     }
