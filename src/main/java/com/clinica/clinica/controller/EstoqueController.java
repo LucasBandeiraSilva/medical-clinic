@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.clinica.clinica.dto.EstoqueDto;
 import com.clinica.clinica.entities.Estoque;
+import com.clinica.clinica.enumTypes.TipoServico;
 import com.clinica.clinica.repository.EstoqueRepository;
 
 import jakarta.validation.Valid;
@@ -33,6 +34,7 @@ public class EstoqueController {
     public ModelAndView cadastrarProdutModelAndView() {
         ModelAndView mv = new ModelAndView();
         mv.addObject("estoque", new EstoqueDto());
+        mv.addObject("tipoServico", TipoServico.values());
         mv.setViewName("estoque/cadastroEstoque");
         return mv;
     }
@@ -40,9 +42,11 @@ public class EstoqueController {
     @PostMapping("/salvar-produto")
     public ModelAndView salvarProduto(@Valid @ModelAttribute("estoque") EstoqueDto estoqueDto,
             @RequestParam("fileEstoque") MultipartFile file, BindingResult result) {
-                ModelAndView mv = new ModelAndView();
+        ModelAndView mv = new ModelAndView();
         if (result.hasErrors()) {
+            mv.addObject("tipoServico", TipoServico.values());
             return new ModelAndView("estoque/cadastroEstoque");
+
         }
         Estoque estoque = estoqueDto.toEstoque();
         try {
@@ -53,7 +57,7 @@ public class EstoqueController {
         estoqueRepository.save(estoque);
         mv.setViewName("redirect:/backoffice");
         return mv;
-        
+
     }
 
     @GetMapping("/foto-produto/{id}")
@@ -62,11 +66,12 @@ public class EstoqueController {
         Estoque estoque = this.estoqueRepository.getReferenceById(id);
         return estoque.getFoto();
     }
+
     @GetMapping("/lista")
-    public ModelAndView listaDeEstoques(){
+    public ModelAndView listaDeEstoques() {
         List<Estoque> listaEstoques = this.estoqueRepository.findAllByOrderByNomeAsc();
         ModelAndView mv = new ModelAndView("estoque/listagemEstoque");
-        mv.addObject("estoque",listaEstoques );
+        mv.addObject("estoque", listaEstoques);
         return mv;
-}
+    }
 }

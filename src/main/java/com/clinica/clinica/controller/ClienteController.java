@@ -16,6 +16,7 @@ import com.clinica.clinica.dto.PacienteDto;
 import com.clinica.clinica.entities.Estoque;
 import com.clinica.clinica.entities.Paciente;
 import com.clinica.clinica.enumTypes.CidadesEnum;
+import com.clinica.clinica.enumTypes.TipoServico;
 import com.clinica.clinica.repository.ClienteRepository;
 import com.clinica.clinica.repository.EstoqueRepository;
 
@@ -69,8 +70,7 @@ public class ClienteController {
     @GetMapping("/catalogo")
     public ModelAndView catalogo() {
         ModelAndView mv = new ModelAndView();
-        List<Estoque> lista = this.estoqueRepository.findAll();
-        mv.addObject("servicos", lista);
+        mv.addObject("servicos", TipoServico.values());
         mv.setViewName("cliente/catalogo-consulta");
         return mv;
     }

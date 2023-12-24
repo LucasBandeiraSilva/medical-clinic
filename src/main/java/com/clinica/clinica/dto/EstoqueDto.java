@@ -5,8 +5,11 @@ import java.math.BigDecimal;
 import org.hibernate.validator.constraints.Length;
 
 import com.clinica.clinica.entities.Estoque;
+import com.clinica.clinica.enumTypes.TipoServico;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +29,8 @@ public class EstoqueDto {
     @Lob
     @Column(length = 5242880)
     private byte[] foto;
+    @Enumerated(EnumType.STRING)
+    private TipoServico tipoServico;
 
     public Estoque toEstoque(){
         Estoque estoque = new Estoque();
@@ -33,6 +38,7 @@ public class EstoqueDto {
         estoque.setDescricao(this.Descricao);
         estoque.setValor(this.valor);
         estoque.setFoto(this.foto);
+        estoque.setTipoServico(this.tipoServico);
         return estoque;
     }
 }

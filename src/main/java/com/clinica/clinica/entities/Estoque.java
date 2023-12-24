@@ -2,8 +2,12 @@ package com.clinica.clinica.entities;
 
 import java.math.BigDecimal;
 
+import com.clinica.clinica.enumTypes.TipoServico;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,5 +32,7 @@ public class Estoque {
     @Lob
     @Column(length = 5242880)
     private byte[] foto;
+    @Enumerated(EnumType.STRING)
+    private TipoServico tipoServico;
    
 }

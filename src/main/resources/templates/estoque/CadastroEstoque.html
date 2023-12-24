@@ -24,7 +24,7 @@
     <main>
       <div class="container">
         <div class="row">
-          <div class="col-6">
+          <div class="col-6 d-flex align-items-center">
             <h3 class="ms-5">Cadastre o Serviço</h3>
           </div>
           <div class="col-6">
@@ -58,7 +58,6 @@
                     th:errorclass="is-invalid"
                   />
                   <div class="invalid-feedback" th:errors="*{valor}"></div>
-
                 </div>
               </div>
               <div class="row">
@@ -81,8 +80,22 @@
                     name="fileEstoque"
                     id="fileEstoque"
                     class="form-control"
-                    
                   />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mt-2">
+                  <label for="tipoServico">Selecione o tipo de serviço</label>
+                  <select th:field="*{tipoServico}" id="" class="form-select">
+                    <option selected disabled value="">
+                      Qual o tipo do serviço?
+                    </option>
+                    <option
+                      th:each="tipoServico : ${tipoServico}"
+                      th:text="${tipoServico}"
+                      th:value="${tipoServico}"
+                    ></option>
+                  </select>
                 </div>
               </div>
               <button type="submit" class="btn btn-primary mt-2">Salvar</button>
