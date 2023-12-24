@@ -1,8 +1,5 @@
 package com.clinica.clinica.controller;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -17,9 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.clinica.clinica.dto.EstoqueDto;
-import com.clinica.clinica.entities.Estoque;
 import com.clinica.clinica.enumTypes.TipoServico;
-import com.clinica.clinica.repository.EstoqueRepository;
+import com.clinica.clinica.services.EstoqueService;
 
 import jakarta.validation.Valid;
 
@@ -28,7 +24,7 @@ import jakarta.validation.Valid;
 public class EstoqueController {
 
     @Autowired
-    private EstoqueRepository estoqueRepository;
+    private EstoqueService estoqueService;
 
     @GetMapping("/cadastro")
     public ModelAndView cadastrarProdutModelAndView() {
@@ -41,37 +37,19 @@ public class EstoqueController {
 
     @PostMapping("/salvar-produto")
     public ModelAndView salvarProduto(@Valid @ModelAttribute("estoque") EstoqueDto estoqueDto,
-            @RequestParam("fileEstoque") MultipartFile file, BindingResult result) {
-        ModelAndView mv = new ModelAndView();
-        if (result.hasErrors()) {
-            mv.addObject("tipoServico", TipoServico.values());
-            return new ModelAndView("estoque/cadastroEstoque");
-
-        }
-        Estoque estoque = estoqueDto.toEstoque();
-        try {
-            estoque.setFoto(file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        estoqueRepository.save(estoque);
-        mv.setViewName("redirect:/backoffice");
-        return mv;
+            @RequestParam("fileProduto") MultipartFile file, BindingResult result) {
+        return estoqueService.salvarProduto(estoqueDto, file, result);
 
     }
 
     @GetMapping("/foto-produto/{id}")
     @ResponseBody
     public byte[] fotoMedico(@PathVariable Long id) {
-        Estoque estoque = this.estoqueRepository.getReferenceById(id);
-        return estoque.getFoto();
+        return estoqueService.fotoMedico(id);
     }
 
     @GetMapping("/lista")
     public ModelAndView listaDeEstoques() {
-        List<Estoque> listaEstoques = this.estoqueRepository.findAllByOrderByNomeAsc();
-        ModelAndView mv = new ModelAndView("estoque/listagemEstoque");
-        mv.addObject("estoque", listaEstoques);
-        return mv;
+        return estoqueService.listaDeEstoques();
     }
 }
