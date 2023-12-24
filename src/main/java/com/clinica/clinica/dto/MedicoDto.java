@@ -77,20 +77,19 @@ public class MedicoDto {
 
     }
 
-    public MedicoDto fromMedico(Medico medico) {
-        MedicoDto medicoDto = new MedicoDto();
-        medicoDto.setCodigo(medico.getCodigo());
-        medicoDto.setNome(medico.getNome());
-        medicoDto.setEmail(medico.getEmail());
-        medicoDto.setCpf(medico.getCpf());
-        medicoDto.setSobrenome(medico.getSobrenome());
-        medicoDto.setSenha(medico.getSenha());
-        medicoDto.setCelular(medico.getCelular());
-        medicoDto.setIdade(medico.getIdade());
-        medicoDto.setDataNascimento(medico.getDataNascimento());
-        medicoDto.setCidadesEnum(medico.getCidadesEnum());
-        medicoDto.setEspecialidades(medico.getEspecialidades());
-        return medicoDto;
+    public Medico fromMedico(Medico medico) {
+        medico.setCodigo(this.codigo);
+        medico.setNome(this.nome);
+        medico.setEmail(this.email);
+        medico.setCpf(this.cpf);
+        medico.setSobrenome(this.sobrenome);
+        medico.setSenha(this.senha);
+        medico.setCelular(this.celular);
+        medico.setIdade(this.idade);
+        medico.setDataNascimento(this.dataNascimento);
+        medico.setCidadesEnum(this.cidadesEnum);
+        medico.setEspecialidades(this.especialidades);
+        return medico;
     }
 
 }
