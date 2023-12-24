@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.clinica.clinica.dto.AdminDto;
 import com.clinica.clinica.dto.MedicoDto;
@@ -80,6 +81,14 @@ public class BackOfficeController {
     @GetMapping("/listaMedico")
     public ModelAndView listarMedicos() {
         return backOfficeService.listarMedicos();
+    }
+    @GetMapping("/editar-medico/{id}")
+    public ModelAndView editarMedico(@PathVariable Long id, RedirectAttributes redirectAttributes){
+        return  backOfficeService.editarMedico(id, redirectAttributes);
+    }
+    @PostMapping("/Salvar-edicao/{id}")
+    public ModelAndView salvarEdicao(@Valid @PathVariable Long id, MedicoDto medicoDto, BindingResult result){
+        return backOfficeService.salvarEdicao(id,medicoDto,result);
     }
 
 }

@@ -2,16 +2,19 @@ package com.clinica.clinica.services;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.clinica.clinica.dto.AdminDto;
 import com.clinica.clinica.dto.MedicoDto;
@@ -28,12 +31,12 @@ import jakarta.validation.Valid;
 @Service
 public class BackOfficeService {
 
-     @Autowired
+    @Autowired
     private MedicoRepository medicoRepository;
     @Autowired
     private AdminRepository adminRepository;
 
-    public ModelAndView salvaAdimin(@Valid @ModelAttribute("admin") AdminDto adminDto, BindingResult result) {
+    public ModelAndView salvaAdimin(AdminDto adminDto, BindingResult result) {
         ModelAndView mv = new ModelAndView();
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors().toString());
@@ -47,9 +50,10 @@ public class BackOfficeService {
 
     }
 
+    // métodos para Médicos
     private BCryptPasswordEncoder enconder = new BCryptPasswordEncoder();
-    
-    public ModelAndView salvarCadastro(@Valid @ModelAttribute("medico") MedicoDto medicoDto, BindingResult result,
+
+    public ModelAndView salvarCadastro(MedicoDto medicoDto, BindingResult result,
             @RequestParam("fileProduto") MultipartFile file) {
         ModelAndView mv = new ModelAndView();
 
@@ -87,7 +91,7 @@ public class BackOfficeService {
 
     }
 
-    public byte[] fotoMedico(@PathVariable Long id) {
+    public byte[] fotoMedico(Long id) {
         Medico medico = this.medicoRepository.getReferenceById(id);
         return medico.getFoto();
     }
@@ -98,5 +102,32 @@ public class BackOfficeService {
         mv.setViewName("backoffice/listagemMedicos");
         mv.addObject("medicos", medicos);
         return mv;
+    }
+
+    public ModelAndView editarMedico(Long id, RedirectAttributes attributes) {
+        Optional<Medico> optionalMedico = medicoRepository.findById(id);
+        ModelAndView mv = new ModelAndView();
+        if (optionalMedico.isPresent()) {
+            mv.addObject("medico", optionalMedico.get());
+            mv.addObject("Especialidades", Especialidades.values());
+            mv.addObject("estados", CidadesEnum.values());
+            mv.setViewName("backoffice/edicaoMedico");
+            return mv;
+        }
+        attributes.addFlashAttribute("mensagemErro", "Este médico não existe.");
+        return new ModelAndView("redirect:/backoffice/listaMedico");
+    }
+
+    public ModelAndView salvarEdicao(Long id, MedicoDto medicoDto, BindingResult result) {
+        Optional<Medico> optionalMedico = medicoRepository.findById(id);
+        if (optionalMedico.isPresent()) {
+            Medico medico = optionalMedico.get();
+             medicoDto.fromMedico(medico);
+            medicoRepository.save(medico);
+            System.out.println(medico.toString());
+            return new ModelAndView("redirect:/backoffice/listaMedico");
+        }
+        return new ModelAndView("redirect:/backoffice/listaMedico");
+
     }
 }

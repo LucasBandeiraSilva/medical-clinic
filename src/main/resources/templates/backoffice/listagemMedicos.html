@@ -50,5 +50,8 @@
         </tr>
       </tbody>
     </table>
+    <div th:if="${mensagemErro}">
+      <p class="alert alert-danger" role="alert" th:text="${mensagemErro}"></p>
+    </div>
   </body>
 </html>
