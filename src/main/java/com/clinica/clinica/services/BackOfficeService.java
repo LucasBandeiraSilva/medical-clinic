@@ -20,6 +20,7 @@ import com.clinica.clinica.dto.AdminDto;
 import com.clinica.clinica.dto.MedicoDto;
 import com.clinica.clinica.entities.Admin;
 import com.clinica.clinica.entities.Medico;
+import com.clinica.clinica.entities.Paciente;
 import com.clinica.clinica.enumTypes.CidadesEnum;
 import com.clinica.clinica.enumTypes.Especialidades;
 import com.clinica.clinica.enumTypes.PermissoesEnum;
@@ -122,12 +123,25 @@ public class BackOfficeService {
         Optional<Medico> optionalMedico = medicoRepository.findById(id);
         if (optionalMedico.isPresent()) {
             Medico medico = optionalMedico.get();
-             medicoDto.fromMedico(medico);
+            medicoDto.fromMedico(medico);
             medicoRepository.save(medico);
-            System.out.println(medico.toString());
             return new ModelAndView("redirect:/backoffice/listaMedico");
         }
         return new ModelAndView("redirect:/backoffice/listaMedico");
 
+    }
+
+    public ModelAndView deletarPorID(Long id, RedirectAttributes redirectAttributes) {
+        ModelAndView mv = new ModelAndView();
+        Optional<Medico> medicoOptional = this.medicoRepository.findById(id);
+        if (medicoOptional.isPresent()) {
+            this.medicoRepository.deleteById(id);
+            redirectAttributes.addFlashAttribute("excluido", "Médico excluído com sucesso!");
+            mv.setViewName("redirect:/backoffice/listaMedico");
+            return mv;
+        }
+        redirectAttributes.addFlashAttribute("naoExcluido", "Não foi possível encontrar o médico para exclusão.");
+        mv.setViewName("redirect:/backoffice/listaMedico");
+        return mv;
     }
 }

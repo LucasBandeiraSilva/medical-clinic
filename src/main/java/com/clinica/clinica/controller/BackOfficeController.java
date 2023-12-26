@@ -90,5 +90,9 @@ public class BackOfficeController {
     public ModelAndView salvarEdicao(@Valid @PathVariable Long id, MedicoDto medicoDto, BindingResult result){
         return backOfficeService.salvarEdicao(id,medicoDto,result);
     }
+    @GetMapping("/excluir-medico/{id}")
+    public ModelAndView deletarPorID(@PathVariable Long id,RedirectAttributes redirectAttributes){
+        return backOfficeService.deletarPorID(id,redirectAttributes);
+    }
 
 }

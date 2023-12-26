@@ -13,6 +13,18 @@
     <title>Listagem médicos</title>
   </head>
   <body>
+    <div class="d-flex align-items-center justify-content-center">
+
+      <div th:if="${excluido}" class="text-center">
+        <p class="alert alert-success" th:text="${excluido}"></p>
+      </div>
+      <div th:if="${naoExcluido}">
+        <p class="alert alert-danger" th:text="${naoExcluido}"></p>
+      </div>
+      <div th:if="${mensagemErro}">
+        <p class="alert alert-danger" role="alert" th:text="${mensagemErro}"></p>
+      </div>
+    </div>
     <h1 class="text-center">Listagem de todos os médicos</h1>
     <table class="table text-center table-responsive">
       <thead>
@@ -50,8 +62,6 @@
         </tr>
       </tbody>
     </table>
-    <div th:if="${mensagemErro}">
-      <p class="alert alert-danger" role="alert" th:text="${mensagemErro}"></p>
-    </div>
+    
   </body>
 </html>
