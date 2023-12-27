@@ -2,6 +2,7 @@ package com.clinica.clinica.services;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,11 @@ public class EstoqueService {
         ModelAndView mv = new ModelAndView("estoque/listagemEstoque");
         mv.addObject("estoque", listaEstoques);
         return mv;
+    }
+
+    public ModelAndView catalogo(String tipo){
+        TipoServico tipoServico = TipoServico.valueOf(tipo.toUpperCase());
+        this.estoqueRepository.findByTipoServico(tipoServico);
+        return new ModelAndView("cliente/catalogoServico");
     }
 }

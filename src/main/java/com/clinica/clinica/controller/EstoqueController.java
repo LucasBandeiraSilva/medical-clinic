@@ -52,4 +52,8 @@ public class EstoqueController {
     public ModelAndView listaDeEstoques() {
         return estoqueService.listaDeEstoques();
     }
+    @GetMapping("/{servicos}")
+    public ModelAndView catalogo(@PathVariable String servicos){
+        return estoqueService.catalogo(servicos);
+    }
 }
