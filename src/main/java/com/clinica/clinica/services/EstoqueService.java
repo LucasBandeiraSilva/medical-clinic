@@ -40,14 +40,16 @@ public class EstoqueService {
             e.printStackTrace();
         }
         estoqueRepository.save(estoque);
-        mv.setViewName("redirect:/backoffice");
+        mv.setViewName("redirect:/backoffice/");
         return mv;
 
     }
-     public byte[] fotoMedico(@PathVariable Long id) {
+
+    public byte[] fotoMedico(@PathVariable Long id) {
         Estoque estoque = this.estoqueRepository.getReferenceById(id);
         return estoque.getFoto();
     }
+
     public ModelAndView listaDeEstoques() {
         List<Estoque> listaEstoques = this.estoqueRepository.findAllByOrderByNomeAsc();
         ModelAndView mv = new ModelAndView("estoque/listagemEstoque");
@@ -55,9 +57,16 @@ public class EstoqueService {
         return mv;
     }
 
-    public ModelAndView catalogo(String tipo){
+    public ModelAndView catalogo(String tipo) {
+        ModelAndView mv = new ModelAndView();
         TipoServico tipoServico = TipoServico.valueOf(tipo.toUpperCase());
-        this.estoqueRepository.findByTipoServico(tipoServico);
-        return new ModelAndView("cliente/catalogoServico");
+        List<Estoque> servico = this.estoqueRepository.findByTipoServico(tipoServico);
+        if (!servico.isEmpty()) {
+            mv.setViewName("cliente/catalogoServico");
+            mv.addObject("servico", servico);
+        }else{
+            mv.setViewName("estoque/erro");
+        }
+        return mv;
     }
 }

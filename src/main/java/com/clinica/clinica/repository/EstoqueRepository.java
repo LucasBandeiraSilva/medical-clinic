@@ -12,6 +12,6 @@ import com.clinica.clinica.enumTypes.TipoServico;
 public interface EstoqueRepository extends JpaRepository<Estoque,Long>{
 
     List<Estoque> findAllByOrderByNomeAsc();
-    Optional<Estoque> findByTipoServico(TipoServico tipoServico);
+    List<Estoque> findByTipoServico(TipoServico tipoServico);
     
 }
