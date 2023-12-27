@@ -33,7 +33,7 @@ public class BackOfficeController {
 
     @GetMapping("/")
     public String home(HttpSession session) {
-        Admin admin = (Admin)  session.getAttribute("usuarioLogado");
+        Admin admin = (Admin)  session.getAttribute("usuarioAdmin");
         if(admin == null){
             return "backoffice/login";
         }

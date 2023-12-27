@@ -56,8 +56,8 @@ public class BackOfficeService {
         ModelAndView mv = new ModelAndView();
         Admin admin = adminRepository.findByEmail(email);
         if (admin != null && enconder.matches(senha, admin.getSenha())) {
-            mv.setViewName("redirect:backoffice/");
             session.setAttribute("usuarioAdmin", admin);
+            mv.setViewName("redirect:/backoffice/");
         } else {
             mv.setViewName("backoffice/login");
             redirectAttributes.addFlashAttribute("mensagemErro", "Usuário ou senha inválidos!");
