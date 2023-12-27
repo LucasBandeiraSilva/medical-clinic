@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,14 +17,13 @@ import com.clinica.clinica.dto.AdminDto;
 import com.clinica.clinica.dto.MedicoDto;
 import com.clinica.clinica.entities.Admin;
 import com.clinica.clinica.entities.Medico;
-import com.clinica.clinica.entities.Paciente;
 import com.clinica.clinica.enumTypes.CidadesEnum;
 import com.clinica.clinica.enumTypes.Especialidades;
 import com.clinica.clinica.enumTypes.PermissoesEnum;
 import com.clinica.clinica.repository.AdminRepository;
 import com.clinica.clinica.repository.MedicoRepository;
 
-import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class BackOfficeService {
@@ -37,22 +33,40 @@ public class BackOfficeService {
     @Autowired
     private AdminRepository adminRepository;
 
+    private BCryptPasswordEncoder enconder = new BCryptPasswordEncoder();
+
     public ModelAndView salvaAdimin(AdminDto adminDto, BindingResult result) {
         ModelAndView mv = new ModelAndView();
         if (result.hasErrors()) {
-            System.out.println(result.getAllErrors().toString());
+            System.out.println(result.getFieldError().toString());
             mv.setViewName("backoffice/cadastro-admin");
             return mv;
         }
         Admin admin = adminDto.toAdmin();
+        String senhaSegura = enconder.encode(admin.getSenha());
+        admin.setSenha(senhaSegura);
         adminRepository.save(admin);
         mv.setViewName("backoffice/login");
         return mv;
 
     }
 
+    public ModelAndView loginAdmin(String email, String senha,
+            RedirectAttributes redirectAttributes, HttpSession session) {
+        ModelAndView mv = new ModelAndView();
+        Admin admin = adminRepository.findByEmail(email);
+        if (admin != null && enconder.matches(senha, admin.getSenha())) {
+            mv.setViewName("redirect:backoffice/");
+            session.setAttribute("usuarioAdmin", admin);
+        } else {
+            mv.setViewName("backoffice/login");
+            redirectAttributes.addFlashAttribute("mensagemErro", "Usuário ou senha inválidos!");
+
+        }
+        return mv;
+    }
+
     // métodos para Médicos
-    private BCryptPasswordEncoder enconder = new BCryptPasswordEncoder();
 
     public ModelAndView salvarCadastro(MedicoDto medicoDto, BindingResult result,
             @RequestParam("fileProduto") MultipartFile file) {

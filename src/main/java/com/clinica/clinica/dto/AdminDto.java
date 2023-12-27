@@ -19,8 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AdminDto {
-    @NotBlank(message = "Você deve informar o seu CRM/CRO")
-    private String codigo;
+   
     @NotBlank(message = "O nome é obrigatório.")
     private String nome;
     @NotBlank(message = "O sobrenome é obrigatório.")
@@ -30,31 +29,22 @@ public class AdminDto {
     @Email
     @NotBlank(message = "Informe um e-mail válido.")
     private String email;
-    @NotNull(message = "O número de celular é obrigatório")
-    private Long celular;
-    @NotNull(message = "A idade é obrigatória")
-    private int idade;
-    @NotNull(message = "A data de nascimento é obrigatória")
-    private LocalDate dataNascimento;
+    // @NotNull(message = "O número de celular é obrigatório")
+    // private Long celular;
+    
     @NotBlank(message = "O campo CPF é obrigatório")
     @CPF(message = "CPF invalido")
     private String cpf;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "cidade_nascimento")
-    private CidadesEnum cidadesEnum;
+   
 
     public Admin toAdmin(){
         Admin admin = new Admin();
-        admin.setCodigo(this.codigo);
         admin.setNome(this.nome);
         admin.setSobrenome(this.sobrenome);
         admin.setSenha(this.senha);
         admin.setEmail(this.email);
-        admin.setCelular(this.celular);
-        admin.setIdade(this.idade);
-        admin.setDataNascimento(this.dataNascimento);
+        // admin.setCelular(this.celular);
         admin.setCpf(this.cpf);
-        admin.setCidadesEnum(this.cidadesEnum);
         return admin;
     }
 }

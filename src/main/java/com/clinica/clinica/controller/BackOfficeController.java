@@ -16,10 +16,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.clinica.clinica.dto.AdminDto;
 import com.clinica.clinica.dto.MedicoDto;
+import com.clinica.clinica.entities.Admin;
 import com.clinica.clinica.enumTypes.CidadesEnum;
 import com.clinica.clinica.enumTypes.Especialidades;
 import com.clinica.clinica.services.BackOfficeService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -29,14 +31,22 @@ public class BackOfficeController {
     @Autowired
     private BackOfficeService backOfficeService;
 
-    @GetMapping()
-    public String home() {
+    @GetMapping("/")
+    public String home(HttpSession session) {
+        Admin admin = (Admin)  session.getAttribute("usuarioLogado");
+        if(admin == null){
+            return "backoffice/login";
+        }
         return "backoffice/home";
     }
 
     @GetMapping("/login")
     public String login() {
         return "backoffice/login";
+    }
+    @PostMapping("/login/admin")
+    public ModelAndView loginAdmin(@RequestParam("email") String email, @RequestParam("senha") String senha,RedirectAttributes redirectAttributes,HttpSession session){
+        return backOfficeService.loginAdmin(email, senha, redirectAttributes,session);
     }
 
     @GetMapping("/cadastro-admin")
