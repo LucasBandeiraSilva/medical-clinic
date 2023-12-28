@@ -44,18 +44,31 @@
             <div th:if="${mensagem}">
               <p th:text="${mensagem}" class="alert alert-success"></p>
             </div>
-            <h6>nome do cliente aqui</h6>
-            <div class="d-flex mt-md-4">
+            <h3 th:if="${paciente}" th:text="${'Bem vindo, ' + paciente.nome}"></h3>
+            <h3 th:unless="${paciente}" th:text="Bem-vindo"></h3>
+            <div class="d-flex mt-md-4" th:unless="${paciente}">
               <a
                 class="btn btn-info text-light mt-auto mb-auto me-2"
-                href="/cliente/perfil"
-                >Meu Perfil</a
+                href="/cliente/cadastro"
+                >Cadastrar-se</a
               >
               <a
                 class="btn  btn-info text-light mt-auto mb-auto ms-auto"
-                href="/cliente/perfil"
-                >Minhas consultas</a
+                href="/cliente/login"
+                >Login</a
               >
+            </div>
+            <div class="d-flex mt-md-4" th:if="${paciente}">
+              <a
+              class="btn btn-info text-light mt-auto mb-auto me-2"
+              th:href="@{/cliente/perfil/{id}(id=${paciente.id})}"
+              >Meu Perfil</a
+            >
+            <a
+              class="btn  btn-info text-light mt-auto mb-auto ms-auto"
+              th:href="@{/cliente/consultas/{id}(id=${paciente.id})}"
+              >Minhas consultas</a
+            >
             </div>
           </header>
         </div>

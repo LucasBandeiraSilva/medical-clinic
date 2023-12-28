@@ -25,21 +25,11 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
-    private String codigo;
     private String nome;
     private String sobrenome;
     private String senha;
     @Column(unique = true)
     private String email;
-    @Column(unique = true)
-    private Long celular;
-    private int idade;
-    private LocalDate dataNascimento;
-    @Column(unique = true)
-    private String cpf;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "cidade_nascimento")
-    private CidadesEnum cidadesEnum;
     @Enumerated(EnumType.STRING)
     private PermissoesEnum tipoPermissao;
 }

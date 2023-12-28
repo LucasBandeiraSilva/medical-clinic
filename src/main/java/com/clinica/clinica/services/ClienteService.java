@@ -13,6 +13,7 @@ import com.clinica.clinica.entities.Paciente;
 import com.clinica.clinica.enumTypes.CidadesEnum;
 import com.clinica.clinica.repository.ClienteRepository;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Service
@@ -40,8 +41,21 @@ public class ClienteService {
             clienteRepository.save(cliente);
             System.out.println("cliente salvo");
             redirectAttributes.addFlashAttribute("mensagem", cliente.getNome() + " Sua conta criada com sucesso!!");
-            return new ModelAndView("redirect:/catalogo");
+            return new ModelAndView("redirect:/cliente/login");
         }
 
+    }
+
+    public ModelAndView loginCliente(String email, String senha,HttpSession session,RedirectAttributes redirectAttributes) {
+        ModelAndView mv = new ModelAndView();
+        Paciente paciente = this.clienteRepository.findByEmail(email);
+        if (paciente != null && encoder.matches(senha, paciente.getSenha())) {
+            session.setAttribute("usuarioLogado", paciente);
+            mv.setViewName("redirect:/cliente/catalogo");
+            } else {
+                redirectAttributes.addFlashAttribute("erro", "Usuario e/ou senha incorretos!");
+                mv.setViewName("redirect:/cliente/login");
+        }
+        return mv;
     }
 }

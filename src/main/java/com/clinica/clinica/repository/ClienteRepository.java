@@ -6,4 +6,6 @@ import com.clinica.clinica.entities.Paciente;
 
 public interface ClienteRepository extends JpaRepository<Paciente, Long> {
 
+    Paciente findByEmail(String email);
+
 }

@@ -1,18 +1,11 @@
 package com.clinica.clinica.dto;
 
-import java.time.LocalDate;
-
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.clinica.clinica.entities.Admin;
-import com.clinica.clinica.enumTypes.CidadesEnum;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,10 +21,7 @@ public class AdminDto {
     private String senha;
     @Email
     @NotBlank(message = "Informe um e-mail válido.")
-    private String email;
-    // @NotNull(message = "O número de celular é obrigatório")
-    // private Long celular;
-    
+    private String email;   
     @NotBlank(message = "O campo CPF é obrigatório")
     @CPF(message = "CPF invalido")
     private String cpf;
@@ -43,8 +33,6 @@ public class AdminDto {
         admin.setSobrenome(this.sobrenome);
         admin.setSenha(this.senha);
         admin.setEmail(this.email);
-        // admin.setCelular(this.celular);
-        admin.setCpf(this.cpf);
         return admin;
     }
 }

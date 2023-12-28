@@ -38,7 +38,6 @@ public class BackOfficeService {
     public ModelAndView salvaAdimin(AdminDto adminDto, BindingResult result) {
         ModelAndView mv = new ModelAndView();
         if (result.hasErrors()) {
-            System.out.println(result.getFieldError().toString());
             mv.setViewName("backoffice/cadastro-admin");
             return mv;
         }
